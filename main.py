@@ -16,9 +16,9 @@ def terminate():
 
 def start_screen():
     intro_text = ["             THE SNAKE", "",
-                  "Правила игры",
-                  "Если в правилах несколько строк,",
-                  "приходится выводить их построчно"]
+                  "         press space to start",
+                  " if you're user_1 please click left",
+                  " if you're user_2 please click right"]
 
     fon = pygame.transform.scale(load_image('fon.jpg'), (1400, 800))
     screen.blit(fon, (0, 0))
