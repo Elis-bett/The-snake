@@ -2,6 +2,7 @@ import pygame
 import sys
 import os
 import random
+import sqlite3
 
 pygame.init()
 screen = pygame.display.set_mode((1400, 800))
@@ -36,8 +37,38 @@ def start_screen():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 terminate()
-            elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+            elif event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
                 return  # начинаем игру
+            elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 3:
+                con = sqlite3.connect("the_snake_db.db")
+                cursor = con.cursor()
+                result = cursor.execute(f'''
+                                            SELECT Users.level_id FROM Users
+                                            WHERE Users.id = "1"
+                                        ''').fetchall()
+                sp = []
+                for el in result:
+                    sp.append(int(str(el)[1:2]))
+                lev = max(sp)
+                if lev == 1:
+                    generate_level(load_level("level_1"))
+                else:
+                    generate_level(load_level("level_2"))
+            elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+                con = sqlite3.connect("the_snake_db.db")
+                cursor = con.cursor()
+                result = cursor.execute(f'''
+                                            SELECT Users.level_id FROM Users
+                                            WHERE Users.id = "2"
+                                        ''').fetchall()
+                sp = []
+                for el in result:
+                    sp.append(int(str(el)[1:2]))
+                lev = max(sp)
+                if lev == 1:
+                    generate_level(load_level("level_1"))
+                else:
+                    generate_level(load_level("level_2"))
         pygame.display.flip()
 
 
@@ -174,7 +205,7 @@ def main():
     food = None
     clock = pygame.time.Clock()
     while running:
-        if player == None:
+        if player is None:
             generate_level(load_level("level_1"))
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
